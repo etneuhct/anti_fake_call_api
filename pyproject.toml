@@ -1,0 +1,32 @@
+[tool.poetry]
+name = "anti-fake-call-api"
+version = "0.1.0"
+description = ""
+authors = ["jack"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+django = "5"
+djangorestframework = "^3.14.0"
+django-cors-headers = "^4.3.1"
+djangorestframework-simplejwt = "^5.3.1"
+psycopg2 = "^2.9.9"
+gunicorn = "^21.2.0"
+celery = "^5.3.6"
+gevent = "^23.9.1"
+django-celery-beat = "^2.5.0"
+flower = "^2.0.1"
+django-anymail = { extras = ["sendinblue"], version = "^10.2" }
+djx-cmds = "^0.1.1"
+djx-account = "^0.3.2"
+djx-websocket = "^0.1.0"
+openai = "^1.47.0"
+
+
+[tool.poetry.group.dev.dependencies]
+python-dotenv = "^1.0.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

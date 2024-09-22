@@ -1,0 +1,30 @@
+version: "3.1"
+
+networks:
+  traefik_default:
+    external: true
+
+volumes:
+  fake-call-data-vol: { driver: local }
+
+services:
+
+  fake-call:
+    container_name: fake-call
+    image: "kwyxyz/kwyxyz:fake-call-api"
+    restart: unless-stopped
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.fake-call.entrypoints=websecure
+      - traefik.http.routers.fake-call.rule=Host(`fake-call.dev.fyrex.top`)
+      - traefik.http.services.fake-call.loadbalancer.server.port=8000
+      - traefik.http.routers.fake-call-http.entrypoints=web
+      - traefik.http.routers.fake-call-http.middlewares=to-https
+      - traefik.http.routers.fake-call.service=fake-call
+      - traefik.http.routers.fake-call.tls=true
+      - traefik.http.routers.fake-call.tls.certresolver=letsencrypt
+      - traefik.http.middlewares.to-https.redirectscheme.scheme=websecure
+    networks:
+      - traefik_default
+    volumes:
+      - fake-call-data-vol:/usr/src/app/data
