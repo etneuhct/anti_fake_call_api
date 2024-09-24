@@ -57,7 +57,7 @@ INSTALLED_APPS = [
     'djx_account',
     'djx_websocket',
     'channels',
-    "third_parties"
+    'conversation'
 ]
 
 if MODE == 'dev':
