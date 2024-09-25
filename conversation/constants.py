@@ -1,5 +1,6 @@
 class UserVirtualPhoneNumberStatus:
     pending = 0
+    is_inactive = 1
     is_active = 2
 
 

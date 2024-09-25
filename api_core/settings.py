@@ -127,7 +127,6 @@ else:
     # MEDIA_URL = 'medias/'
     STATIC_URL = 'static/'
 
-
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # cors
@@ -253,3 +252,5 @@ CHANNEL_LAYERS = {
         },
     },
 }
+
+TWILIO_DEFAULT_PHONE_NUMBER = os.getenv('TWILIO_DEFAULT_PHONE_NUMBER')
