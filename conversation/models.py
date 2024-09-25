@@ -52,6 +52,13 @@ class UserVirtualPhoneNumber(models.Model):
     class Meta:
         unique_together = ("user_phone_number", "virtual_phone_number")
 
+    @staticmethod
+    def get_by_virtual_phone_number(virtual_phone_number):
+        UserVirtualPhoneNumber.objects.filter(
+            virtual_phone_number__phone_number=virtual_phone_number,
+            status=UserVirtualPhoneNumberStatus.is_active
+        ).distinct().order_by("created_at").last()
+
 
 class ConversationHistory(models.Model):
     """
@@ -70,8 +77,9 @@ class ConversationHistory(models.Model):
     conversations = models.JSONField(default=list)
     insights = models.JSONField(default=list)
 
-    user_virtual_phone_number = models.ForeignKey("UserVirtualPhoneNumber", on_delete=models.CASCADE)
-    contact = models.ForeignKey("Contact", on_delete=models.CASCADE)
+    user_virtual_phone_number = models.ForeignKey("UserVirtualPhoneNumber", on_delete=models.CASCADE, null=True,
+                                                  blank=True)
+    contact = models.ForeignKey("Contact", on_delete=models.CASCADE, null=True, blank=True)
 
 
 class PhoneNumberVerification(models.Model):
