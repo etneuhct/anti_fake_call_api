@@ -13,7 +13,8 @@ from channels.auth import AuthMiddlewareStack
 from channels.routing import ProtocolTypeRouter, URLRouter
 from django.core.asgi import get_asgi_application
 
-from djx_websocket import routing
+from djx_websocket import routing as djx_websocket_routing
+from real_time_voice import routing as real_time_voice_routing
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'api_core.settings')
 
@@ -21,7 +22,8 @@ application = ProtocolTypeRouter({
     "http": get_asgi_application(),
     "websocket": AuthMiddlewareStack(
         URLRouter(
-            routing.websocket_urlpatterns
+            djx_websocket_routing.websocket_urlpatterns +
+            real_time_voice_routing.websocket_urlpatterns
         )
     ),
 })
