@@ -4,13 +4,14 @@ from rest_framework.viewsets import GenericViewSet
 
 from conversation.models import UserVirtualPhoneNumber
 from conversation.serializers.user_virtual_phone_number_serializers import UserVirtualPhoneNumberCreateSerializer, \
-    UserVirtualPhoneNumberSerializer
+    UserVirtualPhoneNumberSerializer, UserVirtualPhoneNumberUpdateSerializer
 
 
 class UserVirtualPhoneNumberViewSet(
     mixins.ListModelMixin,
     mixins.RetrieveModelMixin,
     mixins.CreateModelMixin,
+    mixins.UpdateModelMixin,
     mixins.DestroyModelMixin,
     GenericViewSet):
     serializer_class = UserVirtualPhoneNumberSerializer
@@ -23,4 +24,6 @@ class UserVirtualPhoneNumberViewSet(
     def get_serializer_class(self):
         if self.action == 'create':
             return UserVirtualPhoneNumberCreateSerializer
+        if self.action == "partial_update" or self.action == "update":
+            return UserVirtualPhoneNumberUpdateSerializer
         return super().get_serializer_class()

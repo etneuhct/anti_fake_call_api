@@ -9,8 +9,8 @@ from conversation.serializers.phone_number_verification_serializers import Phone
     PhoneNumberVerificationCheckCodeSerializer
 
 
-class PhoneNumberVerificationViewSet(mixins.CreateModelMixin, GenericViewSet):
-    serializer_class = PhoneNumberVerificationCreateSerializer
+class PhoneNumberVerificationViewSet(mixins.CreateModelMixin, mixins.UpdateModelMixin, GenericViewSet):
+    serializer_class = PhoneNumberVerificationCheckCodeSerializer
     permission_classes = (IsAuthenticated,)
 
     def get_queryset(self):
@@ -20,15 +20,4 @@ class PhoneNumberVerificationViewSet(mixins.CreateModelMixin, GenericViewSet):
     def get_serializer_class(self):
         if self.action == 'create':
             return PhoneNumberVerificationCreateSerializer
-        elif self.action == "check_code":
-            return PhoneNumberVerificationCheckCodeSerializer
         return super().get_serializer_class()
-
-    @action(detail=True, methods=("get",), url_path="check-code", url_name="check-code")
-    def check_code(self, request, pk):
-        data = self.request.query_params
-        instance = self.get_object()
-        serializer = self.get_serializer(data=data, instance=instance)
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
-        return Response(data=serializer.data)

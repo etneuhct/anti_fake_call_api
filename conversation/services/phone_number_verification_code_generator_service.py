@@ -10,9 +10,8 @@ class PhoneNumberVerificationCodeGeneratorService:
         self.user_phone_number = user_phone_number
 
     def run(self) -> PhoneNumberVerification:
-
         code = self._generate_code()
-        message = self._generate_code()
+        message = code
 
         PhoneNumberVerification.objects.filter(
             user_phone_number=self.user_phone_number
@@ -22,8 +21,7 @@ class PhoneNumberVerificationCodeGeneratorService:
             code=code,
             user_phone_number=self.user_phone_number
         )
-
-        TwilioService().send_sms(instance.user_phone_number.phone_number, message)
+        TwilioService.send_sms(instance.user_phone_number.phone_number, message)
 
         return instance
 

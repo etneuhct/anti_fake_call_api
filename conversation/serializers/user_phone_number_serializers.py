@@ -1,7 +1,6 @@
 from rest_framework import serializers
 
 from conversation.models import UserPhoneNumber
-from conversation.services.phone_number_verification_code_generator_service import PhoneNumberVerificationCodeGeneratorService
 
 
 class UserPhoneNumberSerializer(serializers.ModelSerializer):
@@ -21,7 +20,6 @@ class UserPhoneNumberCreateSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         instance = super().create(validated_data)
-        PhoneNumberVerificationCodeGeneratorService(instance).run()
         return instance
 
     def to_representation(self, instance):
