@@ -39,7 +39,7 @@ class DataGenerator:
 
         # Generate UserVirtualPhoneNumber
         user_virtual_phone_number = UserVirtualPhoneNumber.objects.create(
-            status=UserVirtualPhoneNumberStatus.pending,
+            status=UserVirtualPhoneNumberStatus.is_active,
             created_at=now(),
             user_phone_number=user_phone_number,
             virtual_phone_number=virtual_phone_number

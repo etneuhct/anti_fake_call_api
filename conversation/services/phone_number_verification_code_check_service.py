@@ -11,5 +11,6 @@ class PhoneNumberVerificationCodeCheckService:
         user_phone_number = self.phone_number_verification.user_phone_number
         if is_ok:
             user_phone_number.verified = is_ok
+            user_phone_number.save()
             PhoneNumberVerification.objects.filter(user_phone_number=user_phone_number).delete()
         return is_ok

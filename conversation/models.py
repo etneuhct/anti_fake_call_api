@@ -43,7 +43,7 @@ class Contact(models.Model):
 
 
 class UserVirtualPhoneNumber(models.Model):
-    status = models.IntegerField(default=UserVirtualPhoneNumberStatus.pending)
+    status = models.IntegerField(default=UserVirtualPhoneNumberStatus.is_active)
     created_at = models.DateTimeField(default=now)
 
     user_phone_number = models.ForeignKey("UserPhoneNumber", on_delete=models.CASCADE)
