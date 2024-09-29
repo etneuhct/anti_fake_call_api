@@ -1,0 +1,106 @@
+version: "3.1"
+
+networks:
+  traefik_default:
+    external: true
+
+#volumes:
+#  anti-fake-call-psql-data: { driver: local }
+
+services:
+
+  anti-fake-call-client:
+    container_name: anti-fake-call-client
+    image: "kwyxyz/kwyxyz:anti-fake-call-client"
+    restart: unless-stopped
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.anti-fake-call-client.entrypoints=websecure
+      - traefik.http.routers.anti-fake-call-client.rule=Host(`anti-fake-call.jorganise.app`)
+      - traefik.http.services.anti-fake-call-client.loadbalancer.server.port=80
+      - traefik.http.routers.anti-fake-call-client-http.entrypoints=web
+      - traefik.http.routers.anti-fake-call-client-http.middlewares=to-https
+      - traefik.http.routers.anti-fake-call-client.service=anti-fake-call-client
+      - traefik.http.routers.anti-fake-call-client.tls=true
+      - traefik.http.routers.anti-fake-call-client.tls.certresolver=letsencrypt
+      - traefik.http.middlewares.to-https.redirectscheme.scheme=websecure
+    networks:
+      - traefik_default
+
+  anti-fake-call-api:
+    container_name: anti-fake-call-api
+    image: "kwyxyz/kwyxyz:anti-fake-call-api"
+    labels:
+      - traefik.enable=true
+      - traefik.http.middlewares.to-https.redirectscheme.scheme=websecure
+
+      - traefik.http.routers.anti-fake-call-api.entrypoints=websecure
+      - traefik.http.routers.anti-fake-call-api.rule=Host(`api.anti-fake-call.jorganise.app`)
+      - traefik.http.services.anti-fake-call-api.loadbalancer.server.port=80
+      - traefik.http.routers.anti-fake-call-api-http.entrypoints=web
+      - traefik.http.routers.anti-fake-call-api-http.middlewares=to-https
+      - traefik.http.routers.anti-fake-call-api.service=anti-fake-call-api
+      - traefik.http.routers.anti-fake-call-api.tls=true
+      - traefik.http.routers.anti-fake-call-api.tls.certresolver=letsencrypt
+
+      - traefik.http.routers.anti-fake-call-admin.entrypoints=websecure
+      - traefik.http.routers.anti-fake-call-admin.rule=Host(`admin.anti-fake-call.jorganise.app`)
+      - traefik.http.services.anti-fake-call-admin.loadbalancer.server.port=80
+      - traefik.http.routers.anti-fake-call-admin-http.entrypoints=web
+      - traefik.http.routers.anti-fake-call-admin-http.middlewares=to-https
+      - traefik.http.routers.anti-fake-call-admin.service=anti-fake-call-admin
+      - traefik.http.routers.anti-fake-call-admin.tls=true
+      - traefik.http.routers.anti-fake-call-admin.tls.certresolver=letsencrypt
+
+      - traefik.http.routers.anti-fake-call-medias.entrypoints=websecure
+      - traefik.http.routers.anti-fake-call-medias.rule=Host(`medias.anti-fake-call.jorganise.app`)
+      - traefik.http.services.anti-fake-call-medias.loadbalancer.server.port=80
+      - traefik.http.routers.anti-fake-call-medias-http.entrypoints=web
+      - traefik.http.routers.anti-fake-call-medias-http.middlewares=to-https
+      - traefik.http.routers.anti-fake-call-medias.service=anti-fake-call-medias
+      - traefik.http.routers.anti-fake-call-medias.tls=true
+      - traefik.http.routers.anti-fake-call-medias.tls.certresolver=letsencrypt
+
+      - traefik.http.routers.anti-fake-call-statics.entrypoints=websecure
+      - traefik.http.routers.anti-fake-call-statics.rule=Host(`statics.anti-fake-call.jorganise.app`)
+      - traefik.http.services.anti-fake-call-statics.loadbalancer.server.port=80
+      - traefik.http.routers.anti-fake-call-statics-http.entrypoints=web
+      - traefik.http.routers.anti-fake-call-statics-http.middlewares=to-https
+      - traefik.http.routers.anti-fake-call-statics.service=anti-fake-call-statics
+      - traefik.http.routers.anti-fake-call-statics.tls=true
+      - traefik.http.routers.anti-fake-call-statics.tls.certresolver=letsencrypt
+
+      - traefik.http.routers.anti-fake-call-ws.entrypoints=websecure
+      - traefik.http.routers.anti-fake-call-ws.rule=Host(`ws.anti-fake-call.jorganise.app`)
+      - traefik.http.services.anti-fake-call-ws.loadbalancer.server.port=80
+      - traefik.http.routers.anti-fake-call-ws-http.entrypoints=web
+      - traefik.http.routers.anti-fake-call-ws-http.middlewares=to-https
+      - traefik.http.routers.anti-fake-call-ws.service=anti-fake-call-ws
+      - traefik.http.routers.anti-fake-call-ws.tls=true
+      - traefik.http.routers.anti-fake-call-ws.tls.certresolver=letsencrypt
+    restart: unless-stopped
+    depends_on:
+      anti-fake-call-postgres:
+        condition: service_healthy
+    networks:
+      - traefik_default
+    env_file:
+      - stack.env
+
+  anti-fake-call-postgres:
+    container_name: anti-fake-call-postgres
+    image: postgres
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+#    volumes:
+#      - anti-fake-call-psql-data:/var/lib/postgresql
+    restart: always
+    networks:
+      - traefik_default
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
