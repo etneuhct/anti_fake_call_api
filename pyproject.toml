@@ -23,6 +23,8 @@ djx-account = "^0.3.2"
 djx-websocket = "^0.1.0"
 openai = "^1.47.0"
 twilio = "^9.3.2"
+websocket-client = "^1.8.0"
+rel = "^0.4.9.19"
 
 
 [tool.poetry.group.dev.dependencies]

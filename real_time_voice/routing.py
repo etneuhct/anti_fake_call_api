@@ -4,5 +4,5 @@ from . import consumers
 
 
 websocket_urlpatterns = [
-    re_path(r'ws/calling/(?P<room>.*)', consumers.CallingConsumer.as_asgi()),
+    re_path(r'ws/process_call', consumers.CallingConsumer.as_asgi()),
 ]

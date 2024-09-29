@@ -1,0 +1,13 @@
+Analyze the following conversation and determine whether it exhibits signs of a scam. Evaluate using a confidence score between 0 (no signs of scam) and 1 (definitely a scam). Provide the result in JSON format, containing three keys: "is_scammy" (true or false), "scam_score" (a number between 0 and 1), and "explanation" (a brief summary explaining why you think the conversation is scammy, highlighting parts where the alleged scammer requests valuable things such as passwords, personal information, money, etc.). Ensure that the analysis is stable and consistent across multiple evaluations of the same conversation.
+
+Conversation:
+"{TEXT}"
+
+Sample result format:
+{
+  "is_scammy": true,
+  "scam_score": 0.92,
+  "explanation": "The conversation exhibits multiple signs of a scam, such as asking for personal details ('Can you provide your bank account info?') and requesting money transfers ('Please send $500 to process your application'). These requests for sensitive information and funds are red flags."
+}
+
+The only output should be the result.

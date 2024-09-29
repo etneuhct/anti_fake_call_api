@@ -16,6 +16,8 @@ from pathlib import Path
 
 from dotenv import load_dotenv
 
+from api_core.logging_settings import PRODUCTION_LOGGING, DEVELOPMENT_LOGGING
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 load_dotenv()
@@ -260,3 +262,7 @@ TWILIO_ACCOUNT_SID = os.getenv("TWILIO_ACCOUNT_SID")
 FORCE_REDIRECT_SMS_PHONE_NUMBER = os.getenv("FORCE_REDIRECT_SMS_PHONE_NUMBER")
 FORCE_REDIRECT_SMS = os.getenv("FORCE_REDIRECT_SMS", "1") == "1"
 DRY_SMS = os.getenv("DRY_SMS", "1") == "1"
+
+LOGGING = DEVELOPMENT_LOGGING if MODE == 'dev' else PRODUCTION_LOGGING
+
+OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')
