@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Response>
     <Start>
-        <Stream url="wss://{HTTP_SERVER_REMOTE_HOST}/ws/process_call">
+        <Stream url="wss://ws.anti-fake-call.jorganise.app/ws/process_call">
             <Parameter name="From" value="{fromNumber}" />
         </Stream>
      </Start>
