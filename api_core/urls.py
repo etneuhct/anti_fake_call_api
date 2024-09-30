@@ -21,5 +21,5 @@ urlpatterns = [
     path('api/', include('djx_account.urls')),
     path('api/', include('djx_websocket.urls')),
     path('api/', include('conversation.urls')),
-    path('voice/', include('real_time_voice.urls')),
+    path('api/voice/', include('real_time_voice.urls')),
 ]
