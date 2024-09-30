@@ -19,7 +19,7 @@ client = None
 def run_detection(text: str):
     global prompt_template
     global client
-    client = OpenAI(settings.OPENAI_API_KEY) if client is None else client
+    client = OpenAI(api_key=settings.OPENAI_API_KEY) if client is None else client
     prompt = prompt_template.replace('{TEXT}', text)
     chat_completion = client.chat.completions.create(
         model="gpt-4o-mini",

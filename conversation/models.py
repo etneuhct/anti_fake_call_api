@@ -1,3 +1,4 @@
+import logging
 import uuid
 
 from django.contrib.auth import get_user_model
@@ -8,6 +9,8 @@ from conversation.constants import UserVirtualPhoneNumberStatus, ConversationHis
     ConversationHistoryAnalysisStatus
 
 UserModel = get_user_model()
+
+app_logger = logging.getLogger('app')
 
 
 class VirtualPhoneNumber(models.Model):
@@ -53,8 +56,9 @@ class UserVirtualPhoneNumber(models.Model):
         unique_together = ("user_phone_number", "virtual_phone_number")
 
     @staticmethod
-    def get_by_virtual_phone_number(virtual_phone_number):
-        UserVirtualPhoneNumber.objects.filter(
+    def get_by_virtual_phone_number(virtual_phone_number: str):
+        app_logger.debug(f'get_by_virtual_phone_number({virtual_phone_number})')
+        return UserVirtualPhoneNumber.objects.filter(
             virtual_phone_number__phone_number=virtual_phone_number,
             status=UserVirtualPhoneNumberStatus.is_active
         ).distinct().order_by("created_at").last()

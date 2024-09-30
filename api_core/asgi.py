@@ -14,12 +14,14 @@ from channels.routing import ProtocolTypeRouter, URLRouter
 from django.core.asgi import get_asgi_application
 
 from djx_websocket import routing as djx_websocket_routing
-from real_time_voice import routing as real_time_voice_routing
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'api_core.settings')
+django_asgi_application = get_asgi_application()
+
+from real_time_voice import routing as real_time_voice_routing
 
 application = ProtocolTypeRouter({
-    "http": get_asgi_application(),
+    "http": django_asgi_application,
     "websocket": AuthMiddlewareStack(
         URLRouter(
             djx_websocket_routing.websocket_urlpatterns +
