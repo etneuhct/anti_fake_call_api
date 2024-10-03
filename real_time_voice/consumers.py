@@ -100,7 +100,7 @@ class CallingConsumer(WebsocketConsumer):
                 conversation_id = uuid.uuid4()
                 # todo: use the user-specific number
                 virtual_phone_number = settings.TWILIO_DEFAULT_PHONE_NUMBER
-                self.conversation_entry = twilio_conversation_service.TwilioConversationService.create_conversation_history(conversation_id, virtual_phone_number, fromNumber)
+                self.conversation_entry = twilio_conversation_service.TwilioConversationService.create_conversation_history(conversation_id, virtual_phone_number, self.incoming_phone_number)
             if data['event'] == "media":
                 payload = data['media']['payload']
                 chunk = base64.b64decode(payload)

@@ -1,9 +1,7 @@
 import json
 from pathlib import Path
 
-from openai import OpenAI
-
-from django.conf import settings 
+from real_time_voice.services.openai import OpenAIClientProvider
 
 
 # Get the parent directory as a Path object
@@ -14,12 +12,9 @@ with open(prompt_file, 'r') as f:
     prompt_template = f.read()
 
 
-client = None
-
 def run_detection(text: str):
     global prompt_template
-    global client
-    client = OpenAI(api_key=settings.OPENAI_API_KEY) if client is None else client
+    client = OpenAIClientProvider.get_openai_client()
     prompt = prompt_template.replace('{TEXT}', text)
     chat_completion = client.chat.completions.create(
         model="gpt-4o-mini",

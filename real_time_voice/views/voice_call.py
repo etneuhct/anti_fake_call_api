@@ -11,10 +11,11 @@ with open(template_file, 'r') as f:
 
 def incoming_voice_call(request):
     """Handles a call to our Twilio-managed phone number by sending directives to stream the call to a server endpoint."""
+    from django.conf import settings
     fromNumber = request.GET.get('From', '')
-    server_host = request.get_host()
+    ws_server_url = settings.TWILIO_STREAM_RECEIVER_URL or f'wss://{request.get_host()}/ws'
     return HttpResponse(template_response.replace(
-        '{HTTP_SERVER_REMOTE_HOST}', server_host
+        '{WS_SERVER_URL}', ws_server_url
     ).replace(
         '{fromNumber}', fromNumber
     ))

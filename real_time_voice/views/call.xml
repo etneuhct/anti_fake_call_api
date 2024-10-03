@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Response>
-    <Start>
-        <Stream url="wss://ws.anti-fake-call.jorganise.app/ws/process_call">
-            <Parameter name="From" value="{fromNumber}" />
-        </Stream>
-     </Start>
-     <Say>Stream is connected.</Say>
-       <Pause length="10"/>
+  <Start>
+    <Stream url="{WS_SERVER_URL}/process_call">
+      <Parameter name="From" value="{fromNumber}" />
+    </Stream>
+  </Start>
+  <Say>Hello! How can I help you?</Say>
+  <Pause length="10"/>
+  <Say>Thank you. I'll notify the callee.</Say>
 </Response>

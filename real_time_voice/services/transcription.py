@@ -1,6 +1,8 @@
 from pathlib import Path
 import whisper
 
+from real_time_voice.services.openai import OpenAIClientProvider
+
 model = whisper.load_model("base")
 
 def transcribe(wav_audio_file):
@@ -16,6 +18,13 @@ def transcribe(wav_audio_file):
     options = whisper.DecodingOptions()
     result = whisper.decode(model, mel, options)
     return result
+
+def transcribe_with_api(wav_audio_file):
+    client = OpenAIClientProvider.get_openai_client()
+    return client.audio.transcriptions.create(
+        model="whisper-1",
+        file=wav_audio_file
+    )
 
 
 if __name__ == '__main__':
