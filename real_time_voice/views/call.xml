@@ -3,6 +3,7 @@
   <Start>
     <Stream url="{WS_SERVER_URL}/process_call">
       <Parameter name="From" value="{fromNumber}" />
+      <Parameter name="VirtualNumber" value="{virtualNumber}" />
     </Stream>
   </Start>
   <Say>Hello! How can I help you?</Say>

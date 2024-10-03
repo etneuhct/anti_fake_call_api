@@ -94,12 +94,14 @@ class CallingConsumer(WebsocketConsumer):
             if data['event'] == "start":
                 app_logger.info("Start Message received: {}".format(message))
                 self.incoming_phone_number = data['start']['customParameters'].get('From', '')
-                app_logger.debug(f'Called from: {self.incoming_phone_number}')
+                virtual_phone_number = data['start']['customParameters'].get('VirtualNumber', '')
+                app_logger.debug(f'Call from: {self.incoming_phone_number}')
+                app_logger.debug(f'Call to virtual phone: {virtual_phone_number}')
                 if not self.incoming_phone_number:
                     raise Exception('The calling phone number is missing from the request.')
+                if not virtual_phone_number:
+                    raise Exception('The called virtual phone number is missing from the request.')
                 conversation_id = uuid.uuid4()
-                # todo: use the user-specific number
-                virtual_phone_number = settings.TWILIO_DEFAULT_PHONE_NUMBER
                 self.conversation_entry = twilio_conversation_service.TwilioConversationService.create_conversation_history(conversation_id, virtual_phone_number, self.incoming_phone_number)
             if data['event'] == "media":
                 payload = data['media']['payload']

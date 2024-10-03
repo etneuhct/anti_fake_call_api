@@ -13,9 +13,12 @@ def incoming_voice_call(request):
     """Handles a call to our Twilio-managed phone number by sending directives to stream the call to a server endpoint."""
     from django.conf import settings
     fromNumber = request.GET.get('From', '')
+    twilioNumber = request.GET.get('To', '')
     ws_server_url = settings.TWILIO_STREAM_RECEIVER_URL or f'wss://{request.get_host()}/ws'
     return HttpResponse(template_response.replace(
         '{WS_SERVER_URL}', ws_server_url
     ).replace(
         '{fromNumber}', fromNumber
+    ).replace(
+        '{virtualNumber}', twilioNumber
     ))
